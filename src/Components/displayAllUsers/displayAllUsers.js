@@ -38,14 +38,16 @@ function DisplayAllUsers() {
       });
     getUsers();
     getAllUserCount();
-  }, [pageNumber, limit, allUsers]);
+  }, [pageNumber, limit]);
   const toogleActiveFlag = (e) => {
     let userId = e.target.id;
     console.log(userId);
+
     axios
       .post("http://localhost:8800/api/v1/toogleActiveFlag", { userId })
       .then((resp) => {
-        updateAllUsers(resp.data);
+        console.log("hi");
+        getUsers();
       })
       .catch((error) => {});
   };
@@ -55,7 +57,9 @@ function DisplayAllUsers() {
       .then((resp) => {
         updateAllUserCount(parseInt(resp.data));
       })
-      .catch((error) => {});
+      .catch((error) => {
+        console.log(error.response.data);
+      });
   }
   async function getUsers() {
     await axios
@@ -63,7 +67,9 @@ function DisplayAllUsers() {
       .then((resp) => {
         updateAllUsers(resp.data);
       })
-      .catch((error) => {});
+      .catch((error) => {
+        console.log(error.response.data);
+      });
   }
 
   let rowOfUser;

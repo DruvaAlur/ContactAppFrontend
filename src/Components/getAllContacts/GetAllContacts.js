@@ -7,11 +7,16 @@ import Switch from "@mui/material/Switch";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 function GetAllContacts() {
   const username = useParams();
   const navigation = new useNavigate();
   const [isLoggedIn, updateIsLoggedIn] = useState("");
   const [allContacts, updateAllContacts] = useState([]);
+  const [allContactsCount, updateAllContactsCount] = useState(0);
+  const [pageNumber, updatePageNumber] = useState(1);
+  const [limit, updateLimit] = useState(5);
   useEffect(() => {
     axios
       .post(
@@ -25,17 +30,47 @@ function GetAllContacts() {
         updateIsLoggedIn(false);
       });
     getContacts();
-  }, []);
-  async function getContacts() {
+    getAllContactCount();
+  }, [pageNumber, limit]);
+  async function getAllContactCount() {
     axios
-      .get(`http://localhost:8800/api/v1/getContacts/${username.username}`)
+      .get(
+        `http://localhost:8800/api/v1/getAllContactsCount/${username.username}`
+      )
       .then((resp) => {
-        updateAllContacts(resp.data);
+        updateAllContactsCount(parseInt(resp.data));
       })
       .catch((error) => {
         console.log(error.response.data);
       });
   }
+  async function getContacts() {
+    axios
+      .post(`http://localhost:8800/api/v1/getContacts/${username.username}`, {
+        limit,
+        pageNumber,
+      })
+      .then((resp) => {
+        updateAllContacts(resp.data);
+        console.log(resp.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  }
+  const toogleActiveFlag = (e) => {
+    const fullname = e.target.id;
+    axios
+      .post(`http://localhost:8800/api/v1/toggleContact/${username.username}`, {
+        fullname,
+      })
+      .then((resp) => {
+        updateAllContacts(getContacts());
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   let rowOfContact;
   if (allContacts != null) {
     rowOfContact = Object.values(allContacts).map((u) => {
@@ -45,14 +80,26 @@ function GetAllContacts() {
           <td>{u.fname}</td>
           <td>{u.lname}</td>
           <td>{u.fullname}</td>
-          <td>{u.role}</td>
+          <td>
+            {Object.values(u.contactDetails).map((u) => {
+              return (
+                <>
+                  <p>
+                    <b>{u.type}:&nbsp;</b>
+                    {u.value}
+                  </p>
+                </>
+              );
+            })}
+          </td>
+
           <td id={u.contactId}>
             <FormGroup>
               <FormControlLabel
                 control={
                   <Switch
                     checked={u.isActive}
-                    // onChange={toogleActiveFlag}
+                    onChange={toogleActiveFlag}
                     id={u.fullname}
                   />
                 }
@@ -95,15 +142,37 @@ function GetAllContacts() {
   return (
     <>
       <NavBar username={username.username} />
+      <div className="pagination">
+        <label class="fw-bold">limit:</label>
+        <select
+          id="role"
+          name="role"
+          onChange={(e) => {
+            updateLimit(e.target.value);
+          }}
+        >
+          <option value="5">5</option>
+          <option value="10">10</option>
+        </select>
+      </div>
+      <div className="pagination">
+        <Stack spacing={2}>
+          <Pagination
+            count={Math.ceil(allContactsCount / limit)}
+            color="primary"
+            onChange={(e, value) => updatePageNumber(value)}
+          />
+        </Stack>
+      </div>
       <div>
         <table class="table table-striped">
           <thead>
             <tr>
               <th scope="col"> </th>
-              <th scope="col">Username</th>
-              <th scope="col">Firstname</th>
-              <th scope="col">Lastname</th>
-              <th scope="col">Role</th>
+              <th scope="col">FirstName</th>
+              <th scope="col">LastName</th>
+              <th scope="col">FullName</th>
+              <th scope="col">Contact Details</th>
               <th scope="col">IsActive</th>
             </tr>
           </thead>

@@ -10,6 +10,7 @@ import DisplayAllUsers from "./Components/displayAllUsers/displayAllUsers";
 import CreateContact from "./Components/createContact/CreateContact";
 import UpdateContacts from "./Components/updateContacts/UpdateContacts";
 import GetAllContacts from "./Components/getAllContacts/GetAllContacts";
+import CreateContactDetail from "./Components/createContactDetail/createContactDetail";
 function App() {
   return (
     <Routes>
@@ -17,6 +18,11 @@ function App() {
         exact
         path="/adminDashboard/:username"
         element={<AdminDashboard />}
+      />
+      <Route
+        exact
+        path="/userDashboard/createContactDetail/:username"
+        element={<CreateContactDetail />}
       />
       <Route exact path="/" element={<Login />} />
       <Route

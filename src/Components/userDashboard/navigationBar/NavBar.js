@@ -34,6 +34,9 @@ const ResponsiveAppBar = (props) => {
   const handleGetAllContact = () => {
     navigation(`/userDashboard/GetAllContacts/${username}`);
   };
+  const handleCreateContactDetail = () => {
+    navigation(`/userDashboard/createContactDetail/${username}`);
+  };
   const handleLogout = async () => {
     await axios.post("http://localhost:8800/api/v1/logout").then(() => {
       navigation("/");
@@ -83,6 +86,13 @@ const ResponsiveAppBar = (props) => {
               onClick={handleGetAllContact}
             >
               Get All Contacts
+            </Button>
+            <Button
+              // onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: "white", display: "block" }}
+              onClick={handleCreateContactDetail}
+            >
+              Create Contact Detail
             </Button>
           </Box>
 

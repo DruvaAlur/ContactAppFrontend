@@ -4,12 +4,19 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+
 function CreateContactDetail() {
+  const currentUser = useParams();
+  const navigation = new useNavigate();
+  const [fullname, updateFullname] = useState("");
+  const [type, updateType] = useState("");
+  const [value, updateValue] = useState("");
+  const [status, updateStatus] = useState("");
   const [isLoggedIn, updateIsLoggedIn] = useState("");
   useEffect(() => {
     axios
       .post(
-        `http://localhost:8800/api/v1/isUserLoggedIn/${username.username}`,
+        `http://localhost:8800/api/v1/isUserLoggedIn/${currentUser.username}`,
         {}
       )
       .then((resp) => {
@@ -19,20 +26,38 @@ function CreateContactDetail() {
         updateIsLoggedIn(false);
       });
   }, []);
-  const handleCreateContact = async (e) => {
+  const handleCreateContactDetail = async (e) => {
     e.preventDefault();
     await axios
-      .post(`http://localhost:8800/api/v1/createContact/${username.username}`, {
-        fname,
-        lname,
-      })
+      .post(
+        `http://localhost:8800/api/v1/createContactDetail/${currentUser.username}`,
+        {
+          type,
+          value,
+          fullname,
+        }
+      )
       .then((resp) => {
-        updateStatus("Contact Created");
+        updateStatus("Contact Detail Created");
       })
       .catch((error) => {
         updateStatus(error.response.data);
       });
   };
+  //   const handleCreateContact = async (e) => {
+  //     e.preventDefault();
+  //     await axios
+  //       .post(`http://localhost:8800/api/v1/createContact/${username.username}`, {
+  //         fname,
+  //         lname,
+  //       })
+  //       .then((resp) => {
+  //         updateStatus("Contact Created");
+  //       })
+  //       .catch((error) => {
+  //         updateStatus(error.response.data);
+  //       });
+  //   };
   if (!isLoggedIn) {
     return (
       <>
@@ -61,6 +86,39 @@ function CreateContactDetail() {
       </>
     );
   }
-  return <></>;
+  return (
+    <>
+      <NavBar username={currentUser.username} />
+      <div id="admindashboardform">
+        <form id="formadmin" onSubmit={handleCreateContactDetail}>
+          <label class="fw-bold">Fullname:</label>
+          <input
+            type="text"
+            value={fullname}
+            onChange={(e) => updateFullname(e.target.value)}
+          ></input>
+          <br />
+          <label class="fw-bold">Type:</label>
+          <input
+            type="text"
+            value={type}
+            onChange={(e) => updateType(e.target.value)}
+          ></input>
+          <br />
+          <label class="fw-bold">Value:</label>
+          <input
+            type="text"
+            value={value}
+            onChange={(e) => updateValue(e.target.value)}
+          ></input>
+          <br />
+          <button class="btn btn-primary">Create Contact</button>
+          <br />
+          <br />
+          {status}
+        </form>
+      </div>
+    </>
+  );
 }
 export default CreateContactDetail;
