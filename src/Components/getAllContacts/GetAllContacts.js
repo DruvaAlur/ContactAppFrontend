@@ -149,6 +149,7 @@ function GetAllContacts() {
           name="role"
           onChange={(e) => {
             updateLimit(e.target.value);
+            updatePageNumber(1);
           }}
         >
           <option value="5">5</option>
