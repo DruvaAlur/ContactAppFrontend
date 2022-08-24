@@ -32,6 +32,11 @@ function GetAllContacts() {
     getContacts();
     getAllContactCount();
   }, [pageNumber, limit]);
+  const handleUpdateContact = (u) => {
+    navigation(`/userDashboard/UpdateContacts/${username.username}`, {
+      state: u,
+    });
+  };
   async function getAllContactCount() {
     axios
       .get(
@@ -58,6 +63,16 @@ function GetAllContacts() {
         console.log(error.response.data);
       });
   }
+  const handleGetContactDetail = (u) => {
+    navigation(`/userDashboard/getContactDetail/${username.username}`, {
+      state: u,
+    });
+  };
+  const handleCreateContactDetail = (fullname) => {
+    navigation(`/userDashboard/createContactDetail/${username.username}`, {
+      state: fullname,
+    });
+  };
   const toogleActiveFlag = (e) => {
     const fullname = e.target.id;
     axios
@@ -77,23 +92,38 @@ function GetAllContacts() {
       return (
         <tr id={u.contactId}>
           <td> </td>
-          <td>{u.fname}</td>
-          <td>{u.lname}</td>
-          <td>{u.fullname}</td>
-          <td>
-            {Object.values(u.contactDetails).map((u) => {
-              return (
-                <>
-                  <p>
-                    <b>{u.type}:&nbsp;</b>
-                    {u.value}
-                  </p>
-                </>
-              );
-            })}
+          <td style={{ width: "20%" }}>{u.fname}</td>
+          <td style={{ width: "20%" }}>{u.lname}</td>
+          <td style={{ width: "20%" }}>{u.fullname}</td>
+          <td style={{ width: "10%" }}>
+            <button
+              class="btn btn-primary button"
+              onClick={() => {
+                handleCreateContactDetail(u.fullname);
+              }}
+            >
+              CreateContactDetail
+            </button>
+          </td>
+          <td style={{ width: "10%" }}>
+            <button
+              class="btn btn-primary button"
+              onClick={() => handleGetContactDetail(u)}
+            >
+              getContactDetail
+            </button>
           </td>
 
-          <td id={u.contactId}>
+          <td style={{ width: "10%" }}>
+            <button
+              class="btn btn-primary button"
+              onClick={() => handleUpdateContact(u)}
+            >
+              update
+            </button>
+          </td>
+
+          <td id={u.contactId} style={{ width: "10%" }}>
             <FormGroup>
               <FormControlLabel
                 control={
@@ -173,7 +203,9 @@ function GetAllContacts() {
               <th scope="col">FirstName</th>
               <th scope="col">LastName</th>
               <th scope="col">FullName</th>
-              <th scope="col">Contact Details</th>
+              <th scope="col">Create Contact Details</th>
+              <th scope="col">Get Contact Details</th>
+              <th scope="col">update Contact</th>
               <th scope="col">IsActive</th>
             </tr>
           </thead>

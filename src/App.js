@@ -11,6 +11,9 @@ import CreateContact from "./Components/createContact/CreateContact";
 import UpdateContacts from "./Components/updateContacts/UpdateContacts";
 import GetAllContacts from "./Components/getAllContacts/GetAllContacts";
 import CreateContactDetail from "./Components/createContactDetail/createContactDetail";
+import UpdateUser from "./Components/updateUser/updateUser";
+import GetContactDetail from "./Components/getContactDetail/getContactDetail";
+import UpdateContactDetail from "./Components/updateContactDetail/updateContactDetail";
 function App() {
   return (
     <Routes>
@@ -54,6 +57,21 @@ function App() {
         exact
         path="/userDashboard/UpdateContacts/:username"
         element={<UpdateContacts />}
+      />
+      <Route
+        exact
+        path="/adminDashboard/UpdateUser/:username"
+        element={<UpdateUser />}
+      />
+      <Route
+        exact
+        path="/userDashboard/getContactDetail/:username"
+        element={<GetContactDetail />}
+      />
+      <Route
+        exact
+        path="/userDashboard/updateContactDetail/:username"
+        element={<UpdateContactDetail />}
       />
     </Routes>
   );

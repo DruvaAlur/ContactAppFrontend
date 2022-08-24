@@ -83,6 +83,19 @@ function DisplayAllUsers() {
           <td>{u.fname}</td>
           <td>{u.lname}</td>
           <td>{u.role}</td>
+          <td>
+            <button
+              class="btn btn-primary button"
+              onClick={() => {
+                navigation(
+                  `/adminDashboard/UpdateUser/${currentUser.username}`,
+                  { state: u }
+                );
+              }}
+            >
+              update
+            </button>
+          </td>
           <td id={u.userId}>
             <FormGroup>
               <FormControlLabel
@@ -161,6 +174,7 @@ function DisplayAllUsers() {
               <th scope="col">Firstname</th>
               <th scope="col">Lastname</th>
               <th scope="col">Role</th>
+              <th scope="col">Update</th>
               <th scope="col">IsActive</th>
             </tr>
           </thead>

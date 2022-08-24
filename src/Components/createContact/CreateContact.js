@@ -70,28 +70,38 @@ function CreateContact() {
   return (
     <>
       <NavBar username={username.username} />
-      <div id="admindashboardform">
-        <form id="formadmin" onSubmit={handleCreateContact}>
-          <label class="fw-bold">Firstname:</label>
-          <input
-            type="text"
-            value={fname}
-            onChange={(e) => updateFname(e.target.value)}
-          ></input>
-          <br />
-          <label class="fw-bold">Lastname:</label>
-          <input
-            type="text"
-            value={lname}
-            onChange={(e) => updateLname(e.target.value)}
-          ></input>
+      <div
+        style={{
+          height: "100vh",
+          width: "100vw",
+          justifyContent: "center",
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <div id="admindashboardform">
+          <form id="formadmin" onSubmit={handleCreateContact}>
+            <label class="fw-bold">Firstname:</label>
+            <input
+              type="text"
+              value={fname}
+              onChange={(e) => updateFname(e.target.value)}
+            ></input>
+            <br />
+            <label class="fw-bold">Lastname:</label>
+            <input
+              type="text"
+              value={lname}
+              onChange={(e) => updateLname(e.target.value)}
+            ></input>
 
-          <br />
-          <button class="btn btn-primary">Create Contact</button>
-          <br />
-          <br />
-          {status}
-        </form>
+            <br />
+            <button class="btn btn-primary">Create Contact</button>
+            <br />
+            <br />
+            {status}
+          </form>
+        </div>
       </div>
     </>
   );

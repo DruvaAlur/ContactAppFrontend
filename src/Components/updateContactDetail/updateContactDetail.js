@@ -1,5 +1,110 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import "./updateContactDetail";
+import { useLocation } from "react-router-dom";
+import NavBar from "../userDashboard/navigationBar/NavBar";
+import { Navigate, useNavigate } from "react-router-dom";
 function UpdateContactDetail() {
-  return <></>;
+  const [status, updateStatus] = useState("");
+  const location = useLocation();
+  // const fullname = location.state.fullname;
+  const u = location.state;
+  let fullname;
+  let type;
+  console.log(fullname);
+  const [propertTobeUpdated, updatePropertTobeUpdated] = useState("type");
+  const [propvalue, updatePropvalue] = useState("");
+  const currentUser = useParams();
+  const navigation = new useNavigate();
+  const [loginStatus, updateLoginStatus] = useState("");
+
+  useEffect(() => {
+    axios
+      .post(
+        `http://localhost:8800/api/v1/isUserLoggedIn/${currentUser.username}`,
+        {}
+      )
+      .then((resp) => {
+        updateLoginStatus(true);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+        updateLoginStatus(false);
+      });
+  }, []);
+
+  if (!loginStatus) {
+    return (
+      <div
+        style={{
+          width: "100vw",
+          height: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexWrap: "wrap",
+          flexDirection: "column",
+        }}
+      >
+        <p style={{ color: "red", fontSize: "20px" }}>
+          User not logged in please login by clicking below
+        </p>
+
+        <button
+          onClick={() => navigation("/")}
+          class="btn btn-secondary button"
+        >
+          login
+        </button>
+      </div>
+    );
+  }
+  fullname = u.fullname;
+  type = u.type;
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post(
+        `http://localhost:8800/api/v1/updateContactDetail/${currentUser.username}`,
+        { fullname, propertTobeUpdated, propvalue, type }
+      )
+      .then((resp) => {
+        updateStatus("updated");
+      })
+      .catch((error) => {
+        updateStatus(error.response.data);
+      });
+  };
+  return (
+    <>
+      <NavBar username={currentUser.username} />
+      <form id="formadmin" onSubmit={handleSubmit}>
+        <label class="fw-bold">Property</label>
+        <select
+          id="propertyTobeUpdated"
+          name="propertyTobeUpdated"
+          onChange={(e) => {
+            updatePropertTobeUpdated(e.target.value);
+          }}
+        >
+          <option value="type">type</option>
+          <option value="value">value</option>
+        </select>
+        <br />
+        <label class="fw-bold">Value</label>
+        <input
+          type="text"
+          // value={value}
+          onChange={(e) => updatePropvalue(e.target.value)}
+        ></input>
+        <br />
+        <button class="btn btn-primary">Update Contact</button>
+        <br />
+        <br />
+        {status}
+      </form>
+    </>
+  );
 }
 export default UpdateContactDetail;

@@ -28,9 +28,7 @@ const ResponsiveAppBar = (props) => {
     console.log("hiiii");
     navigation(`/userDashboard/createContacts/${username}`);
   };
-  const handleUpdateContact = () => {
-    navigation(`/userDashboard/UpdateContacts/${username}`);
-  };
+
   const handleGetAllContact = () => {
     navigation(`/userDashboard/GetAllContacts/${username}`);
   };
@@ -73,13 +71,7 @@ const ResponsiveAppBar = (props) => {
             >
               Create Contacts
             </Button>
-            <Button
-              // onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: "white", display: "block" }}
-              onClick={handleUpdateContact}
-            >
-              Update Contacts
-            </Button>
+
             <Button
               // onClick={handleCloseNavMenu}
               sx={{ my: 2, color: "white", display: "block" }}
@@ -87,13 +79,13 @@ const ResponsiveAppBar = (props) => {
             >
               Get All Contacts
             </Button>
-            <Button
+            {/* <Button
               // onClick={handleCloseNavMenu}
               sx={{ my: 2, color: "white", display: "block" }}
               onClick={handleCreateContactDetail}
             >
               Create Contact Detail
-            </Button>
+            </Button> */}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>

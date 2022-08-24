@@ -4,15 +4,18 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 function CreateContactDetail() {
   const currentUser = useParams();
   const navigation = new useNavigate();
-  const [fullname, updateFullname] = useState("");
+
   const [type, updateType] = useState("");
   const [value, updateValue] = useState("");
   const [status, updateStatus] = useState("");
   const [isLoggedIn, updateIsLoggedIn] = useState("");
+  const location = useLocation();
+  const fullname = location.state;
   useEffect(() => {
     axios
       .post(
@@ -89,34 +92,37 @@ function CreateContactDetail() {
   return (
     <>
       <NavBar username={currentUser.username} />
-      <div id="admindashboardform">
-        <form id="formadmin" onSubmit={handleCreateContactDetail}>
-          <label class="fw-bold">Fullname:</label>
-          <input
-            type="text"
-            value={fullname}
-            onChange={(e) => updateFullname(e.target.value)}
-          ></input>
-          <br />
-          <label class="fw-bold">Type:</label>
-          <input
-            type="text"
-            value={type}
-            onChange={(e) => updateType(e.target.value)}
-          ></input>
-          <br />
-          <label class="fw-bold">Value:</label>
-          <input
-            type="text"
-            value={value}
-            onChange={(e) => updateValue(e.target.value)}
-          ></input>
-          <br />
-          <button class="btn btn-primary">Create Contact</button>
-          <br />
-          <br />
-          {status}
-        </form>
+      <div
+        style={{
+          height: "100vh",
+          width: "100vw",
+          justifyContent: "center",
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <div id="admindashboardform">
+          <form id="formadmin" onSubmit={handleCreateContactDetail}>
+            <label class="fw-bold">Type:</label>
+            <input
+              type="text"
+              value={type}
+              onChange={(e) => updateType(e.target.value)}
+            ></input>
+            <br />
+            <label class="fw-bold">Value:</label>
+            <input
+              type="text"
+              value={value}
+              onChange={(e) => updateValue(e.target.value)}
+            ></input>
+            <br />
+            <button class="btn btn-primary">Create Contact</button>
+            <br />
+            <br />
+            {status}
+          </form>
+        </div>
       </div>
     </>
   );

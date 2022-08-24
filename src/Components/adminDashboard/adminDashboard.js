@@ -156,55 +156,7 @@ function AdminDashboard() {
             {statusOfCreateUser}
           </form>
         </div>
-        <div id="admindashboardform">
-          <form onSubmit={handleUpdateUserSubmit} id="formadmin">
-            <label class="fw-bold">Username:</label>
-            <input
-              type="text"
-              onChange={(e) => {
-                updateUsername(e.target.value);
-              }}
-            ></input>
-            <br />
-            {/* <label>Property:</label>
-            <input
-              type="text"
-              value={propertyToUpdate}
-              onChange={(e) => {
-                updatepropertyToUpdate(e.target.value);
-              }}
-            ></input> */}
-            <label for="property" class="fw-bold">
-              Property:
-            </label>
-            <select
-              id="property"
-              name="property"
-              onChange={(e) => {
-                updatepropertyToUpdate(e.target.value);
-              }}
-            >
-              <option value="username">username</option>
-              <option value="firstname">firstname</option>
-              <option value="lastname">lastname</option>
-            </select>
-            <br />
-            <label class="fw-bold">Value:</label>
-            <input
-              type="text"
-              value={value}
-              onChange={(e) => {
-                updateValue(e.target.value);
-              }}
-            ></input>
-            <br />
 
-            <button class="btn btn-primary button">Update User</button>
-            <br />
-            <br />
-            {statusOfUpdateUser}
-          </form>
-        </div>
         <div id="admindashboardform">
           <div>
             <button
